@@ -37,14 +37,116 @@
       </nav>
     </header>
 
-    <main class="main-content">
-      <section aria-labelledby="cleaning-heading" class="card">
-        <h2 id="cleaning-heading">Wöchentlicher Putzplan</h2>
-        <p>
-          Hier entsteht die Aufgabenverteilung für die WG-Räume inklusive
-          Wochenübersicht und Fortschrittsanzeige.
-        </p>
+    <main class="page-grid">
+      <section class="card">
+        <h2>Neue Putzaufgabe anlegen</h2>
+
+        <form id="task-form">
+          <div class="form-group">
+            <label for="task-title">Aufgabenbeschreibung</label>
+            <input
+                    type="text"
+                    id="task-title"
+                    name="task-title"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="task-room">Raum</label>
+            <select id="task-room" name="task-room">
+              <option value="">Bitte wählen</option>
+              <option value="Küche">Küche</option>
+              <option value="Bad">Bad</option>
+              <option value="Flur">Flur</option>
+              <option value="Wohnzimmer">Wohnzimmer</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="task-person">Zuständige Person</label>
+            <select id="task-person" name="task-person">
+              <option value="">Bitte wählen</option>
+              <option value="Alex">Alex</option>
+              <option value="Sam">Sam</option>
+              <option value="Robin">Robin</option>
+              <option value="Luca">Luca</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="task-date">Fälligkeitsdatum</label>
+            <input
+                    type="date"
+                    id="task-date"
+                    name="task-date"
+            >
+          </div>
+
+          <p id="error-message" class="error-message"></p>
+
+          <button
+                  type="button"
+                  id="add-task-btn"
+                  class="btn btn-primary"
+          >
+            Aufgabe hinzufügen
+          </button>
+        </form>
       </section>
+
+      <section class="card">
+        <h2>Aktuelle Putzaufgaben</h2>
+        <div id="task-list" class="item-list"></div>
+      </section>
+
+      <aside class="card info-aside">
+        <h2>Wöchentliche Raumrotation</h2>
+
+        <div class="table-wrapper">
+          <table class="schedule-table">
+            <thead>
+            <tr>
+              <th>Woche</th>
+              <th>Küche</th>
+              <th>Bad</th>
+              <th>Flur</th>
+              <th>Wohnzimmer</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+              <th>1</th>
+              <td>Alex</td>
+              <td>Sam</td>
+              <td>Robin</td>
+              <td>Luca</td>
+            </tr>
+            <tr>
+              <th>2</th>
+              <td>Sam</td>
+              <td>Robin</td>
+              <td>Luca</td>
+              <td>Alex</td>
+            </tr>
+            <tr>
+              <th>3</th>
+              <td>Robin</td>
+              <td>Luca</td>
+              <td>Alex</td>
+              <td>Sam</td>
+            </tr>
+            <tr>
+              <th>4</th>
+              <td>Luca</td>
+              <td>Alex</td>
+              <td>Sam</td>
+              <td>Robin</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </aside>
     </main>
 
     <footer class="site-footer">
