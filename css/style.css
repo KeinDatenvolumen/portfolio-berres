@@ -1,0 +1,30 @@
+/* Gruppenname: WI_A_Gruppe_1 */
+
+/* Grundlegende Box-Sizing- und Schrift-Einstellungen */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333333;
+  background-color: #f4f6f8;
+  line-height: 1.5;
+}
+
+/* Grundcontainer für den Seiteninhalt */
+.main-content {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #dce1e7;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
