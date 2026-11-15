@@ -1,30 +1,909 @@
 /* Gruppenname: WI_A_Gruppe_1 */
 
-/* Grundlegende Box-Sizing- und Schrift-Einstellungen */
+/* ==================================================
+   1. Farben und allgemeine Grundeinstellungen
+   ================================================== */
+
+:root {
+  --color-primary: #2b6cb0;
+  --color-primary-dark: #1f4f82;
+  --color-success: #2f855a;
+  --color-success-dark: #276749;
+  --color-danger: #c53030;
+  --color-danger-dark: #9b2c2c;
+  --color-secondary: #5f6b76;
+  --color-secondary-dark: #454f58;
+
+  --color-background: #f4f6f8;
+  --color-surface: #ffffff;
+  --color-text: #333333;
+  --color-text-light: #5f6b76;
+  --color-border: #cbd5e0;
+
+  --color-focus: #63b3ed;
+  --color-error-background: #fff5f5;
+  --color-success-background: #f0fff4;
+  --color-category-background: #ebf8ff;
+
+  --border-radius: 8px;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Das Box-Modell wird für alle Elemente vereinheitlicht. */
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+}
+
+html {
+  font-size: 16px;
 }
 
 body {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+
   font-family: Arial, Helvetica, sans-serif;
-  color: #333333;
-  background-color: #f4f6f8;
   line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-background);
 }
 
-/* Grundcontainer für den Seiteninhalt */
+h1,
+h2,
+h3 {
+  margin-top: 0;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+p {
+  margin-top: 0;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+/* Gut sichtbarer Fokus für die Tastaturbedienung. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+
+/* ==================================================
+   2. Header und Navigation
+   ================================================== */
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  width: 100%;
+  padding: 16px 32px;
+
+  color: #ffffff;
+  background-color: var(--color-primary);
+  box-shadow: var(--box-shadow);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brand-logo {
+  display: block;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.header-brand h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.6rem;
+}
+
+.tagline {
+  margin: 4px 0 0;
+  color: #e6f0fa;
+  font-size: 0.9rem;
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 10px 14px;
+
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+
+  border-radius: var(--border-radius);
+  transition:
+          background-color 0.2s ease,
+          color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+  background-color: var(--color-primary-dark);
+}
+
+.nav-link.active {
+  color: var(--color-primary-dark);
+  background-color: #ffffff;
+}
+
+.nav-link:focus-visible {
+  outline-color: #ffffff;
+}
+
+
+/* ==================================================
+   3. Hauptbereich, Karten und Footer
+   ================================================== */
+
 .main-content {
-  max-width: 960px;
-  margin: 24px auto;
-  padding: 0 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px;
+  flex: 1;
 }
 
 .card {
-  background-color: #ffffff;
-  border: 1px solid #dce1e7;
-  border-radius: 8px;
-  padding: 20px;
+  padding: 24px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.site-footer {
+  width: 100%;
+  margin-top: auto;
+  padding: 20px 32px;
+
+  color: #ffffff;
+  text-align: center;
+  background-color: #2d3748;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+
+/* ==================================================
+   4. Formulare
+   ================================================== */
+
+.form-group {
   margin-bottom: 20px;
+}
+
+.form-group label,
+label {
+  display: block;
+  margin-bottom: 6px;
+
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+
+  font: inherit;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+
+  transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: var(--color-secondary);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.18);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #718096;
+}
+
+.error-message {
+  margin: 12px 0;
+  padding: 10px 12px;
+
+  color: var(--color-danger-dark);
+  background-color: var(--color-error-background);
+
+  border: 1px solid var(--color-danger);
+  border-left: 4px solid var(--color-danger);
+  border-radius: 6px;
+}
+
+/* Leere Fehlermeldungen werden nicht angezeigt. */
+.error-message:empty,
+.error-message.hidden {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+
+/* ==================================================
+   5. Buttons
+   ================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  min-height: 42px;
+  padding: 10px 16px;
+
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+
+  border: 2px solid transparent;
+  border-radius: 6px;
+
+  transition:
+          background-color 0.2s ease,
+          border-color 0.2s ease,
+          color 0.2s ease,
+          transform 0.1s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:focus {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.btn-primary {
+  color: #ffffff;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+  color: #ffffff;
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+.btn-danger {
+  color: #ffffff;
+  background-color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.btn-danger:hover {
+  color: #ffffff;
+  background-color: var(--color-danger-dark);
+  border-color: var(--color-danger-dark);
+}
+
+.btn-secondary {
+  color: #ffffff;
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+.btn-secondary:hover {
+  color: #ffffff;
+  background-color: var(--color-secondary-dark);
+  border-color: var(--color-secondary-dark);
+}
+
+.btn-sm {
+  min-height: 34px;
+  padding: 6px 10px;
+  font-size: 0.875rem;
+}
+
+
+/* ==================================================
+   6. Badges und Statusanzeigen
+   ================================================== */
+
+.badge {
+  display: inline-block;
+  padding: 4px 9px;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  border: 1px solid transparent;
+  border-radius: 999px;
+}
+
+.badge-category {
+  color: var(--color-primary-dark);
+  background-color: var(--color-category-background);
+  border-color: #90cdf4;
+}
+
+.badge-open {
+  color: #744210;
+  background-color: #fffaf0;
+  border-color: #f6ad55;
+}
+
+.badge-done {
+  color: var(--color-success-dark);
+  background-color: var(--color-success-background);
+  border-color: #68d391;
+}
+
+.balance-positive {
+  color: var(--color-success);
+  font-weight: 700;
+}
+
+.balance-negative {
+  color: var(--color-danger);
+  font-weight: 700;
+}
+/* ==================================================
+   7. Mehrspaltiges Seitenlayout
+   ================================================== */
+
+.page-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+/* Verhindert, dass lange Inhalte das Grid verbreitern. */
+.page-grid > * {
+  min-width: 0;
+}
+
+.info-aside {
+  padding: 20px;
+
+  background-color: #ebf8ff;
+  border: 1px solid #90cdf4;
+  border-left: 4px solid var(--color-primary);
+  border-radius: var(--border-radius);
+}
+
+.info-aside h2,
+.info-aside h3 {
+  color: var(--color-primary-dark);
+}
+
+.info-aside > :last-child {
+  margin-bottom: 0;
+}
+
+
+/* ==================================================
+   8. Formularzeilen und Filter
+   ================================================== */
+
+.form-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.form-row .form-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+
+  margin-bottom: 24px;
+  padding: 16px;
+
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+}
+
+.filter-bar .form-group {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.filter-bar .btn {
+  flex-shrink: 0;
+}
+
+
+/* ==================================================
+   9. Listen und Eintragskarten
+   ================================================== */
+
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  width: 100%;
+  padding: 16px;
+
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/*
+   Direkte Bereiche innerhalb einer Eintragskarte dürfen wachsen.
+   Aktionsbuttons und Badges behalten ihre notwendige Breite.
+*/
+.item-card > * {
+  min-width: 0;
+}
+
+.item-card > :first-child {
+  flex: 1;
+}
+
+.item-card h2,
+.item-card h3,
+.item-card p {
+  overflow-wrap: anywhere;
+}
+
+.item-card h2,
+.item-card h3 {
+  margin-bottom: 4px;
+}
+
+.item-card p {
+  margin-bottom: 0;
+  color: var(--color-text-light);
+}
+
+.item-card .badge,
+.item-card .btn {
+  flex-shrink: 0;
+}
+
+/* Erledigte Einträge werden optisch zurückgenommen. */
+.item-completed {
+  opacity: 0.65;
+}
+
+.item-completed h2,
+.item-completed h3,
+.item-completed p {
+  text-decoration: line-through;
+}
+
+.empty-state {
+  padding: 32px 20px;
+
+  color: var(--color-text-light);
+  text-align: center;
+  background-color: var(--color-surface);
+
+  border: 2px dashed var(--color-border);
+  border-radius: var(--border-radius);
+}
+
+.empty-state p {
+  margin-bottom: 0;
+}
+
+
+/* ==================================================
+   10. Tabellen
+   ================================================== */
+
+/*
+   Breite Tabellen können innerhalb dieses Bereichs scrollen,
+   ohne die gesamte Seite breiter zu machen.
+*/
+.table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+}
+
+.schedule-table {
+  width: 100%;
+  min-width: 650px;
+
+  border-collapse: collapse;
+  background-color: var(--color-surface);
+}
+
+.schedule-table th,
+.schedule-table td {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.schedule-table th {
+  color: #ffffff;
+  background-color: var(--color-primary);
+  font-weight: 700;
+}
+
+.schedule-table tbody tr:nth-child(even) {
+  background-color: #f7fafc;
+}
+
+.schedule-table tbody tr:hover {
+  background-color: #ebf8ff;
+}
+
+.schedule-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+
+/* ==================================================
+   11. Fortschrittsbalken
+   ================================================== */
+
+.progress-container {
+  width: 100%;
+  height: 20px;
+  overflow: hidden;
+
+  background-color: #e2e8f0;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+}
+
+.progress-bar {
+  width: 0;
+  height: 100%;
+  max-width: 100%;
+
+  background-color: var(--color-success);
+  border-radius: 999px;
+
+  transition: width 0.3s ease;
+}
+
+
+/* ==================================================
+   12. Statistik-Kacheln
+   ================================================== */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-box {
+  min-width: 0;
+  padding: 20px;
+
+  text-align: center;
+  background-color: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.stat-box h2,
+.stat-box h3 {
+  margin-bottom: 8px;
+  color: var(--color-text-light);
+  font-size: 1rem;
+}
+
+.stat-box p {
+  margin-bottom: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+
+/* ==================================================
+   13. Tablet-Ansicht bis 768 Pixel
+   ================================================== */
+
+@media (max-width: 768px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 24px;
+  }
+
+  .nav-list {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .nav-link {
+    padding: 8px 12px;
+  }
+
+  .main-content {
+    padding: 24px;
+  }
+
+  /*
+     Das zweispaltige Seitenlayout wird auf Tablets
+     zu einem einspaltigen Layout.
+  */
+  .page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    flex-wrap: wrap;
+  }
+
+  .form-row .form-group {
+    flex-basis: calc(50% - 8px);
+  }
+
+  .filter-bar {
+    flex-wrap: wrap;
+  }
+
+  .filter-bar .form-group {
+    flex-basis: calc(50% - 8px);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .item-card {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .site-footer {
+    padding: 18px 24px;
+  }
+}
+
+
+/* ==================================================
+   14. Smartphone-Ansicht bis 480 Pixel
+   ================================================== */
+
+@media (max-width: 480px) {
+  html {
+    font-size: 15px;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .site-header {
+    padding: 14px 16px;
+  }
+
+  .header-brand {
+    width: 100%;
+  }
+
+  .brand-logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .header-brand h1 {
+    font-size: 1.35rem;
+    overflow-wrap: anywhere;
+  }
+
+  .tagline {
+    font-size: 0.85rem;
+  }
+
+  /*
+     Die Navigation wird auf kleinen Smartphones
+     vollständig untereinander dargestellt.
+  */
+  .nav-list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .nav-list li {
+    width: 100%;
+  }
+
+  .nav-link {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .main-content {
+    padding: 16px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .info-aside {
+    padding: 16px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .form-row .form-group {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  /*
+     Suche, Dropdown und Filterbutton stehen auf
+     Smartphones untereinander.
+  */
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .filter-bar .form-group {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .filter-bar .btn {
+    width: 100%;
+  }
+
+  .item-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .item-card .badge {
+    align-self: flex-start;
+  }
+
+  .item-card .btn {
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-box {
+    padding: 16px;
+  }
+
+  /*
+     Nur die Tabelle selbst kann innerhalb ihres Bereichs
+     horizontal scrollen. Die gesamte Seite bleibt bei
+     375 Pixel Breite ohne horizontalen Scrollbalken.
+  */
+  .table-wrapper {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .schedule-table th,
+  .schedule-table td {
+    padding: 10px 12px;
+  }
+
+  .site-footer {
+    padding: 16px;
+  }
 }
