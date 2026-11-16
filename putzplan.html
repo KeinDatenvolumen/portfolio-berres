@@ -38,7 +38,8 @@
       </nav>
     </header>
 
-    <main class="page-grid">
+    <main class="main-content">
+      <div class="page-grid">
       <section class="card">
         <h2>Neue Putzaufgabe anlegen</h2>
 
@@ -67,10 +68,6 @@
             <label for="task-person">Zuständige Person</label>
             <select id="task-person" name="task-person">
               <option value="">Bitte wählen</option>
-              <option value="Alex">Alex</option>
-              <option value="Sam">Sam</option>
-              <option value="Robin">Robin</option>
-              <option value="Luca">Luca</option>
             </select>
           </div>
 
@@ -126,10 +123,6 @@
               <label for="person-filter">Mitbewohner*in</label>
               <select id="person-filter" name="person-filter">
                 <option value="">Alle Personen</option>
-                <option value="Alex">Alex</option>
-                <option value="Sam">Sam</option>
-                <option value="Robin">Robin</option>
-                <option value="Luca">Luca</option>
               </select>
             </div>
 
@@ -156,6 +149,7 @@
 
         <div id="task-list" class="item-list"></div>
       </section>
+      </div>
 
       <aside class="card info-aside">
         <h2>Wöchentliche Raumrotation</h2>
@@ -164,44 +158,15 @@
           <table class="schedule-table">
             <thead>
             <tr>
-              <th>Woche</th>
-              <th>Küche</th>
-              <th>Bad</th>
-              <th>Flur</th>
-              <th>Wohnzimmer</th>
+              <th scope="col">Woche</th>
+              <th scope="col">Küche</th>
+              <th scope="col">Bad</th>
+              <th scope="col">Flur</th>
+              <th scope="col">Wohnzimmer</th>
             </tr>
             </thead>
 
-            <tbody>
-            <tr>
-              <th>1</th>
-              <td>Alex</td>
-              <td>Sam</td>
-              <td>Robin</td>
-              <td>Luca</td>
-            </tr>
-            <tr>
-              <th>2</th>
-              <td>Sam</td>
-              <td>Robin</td>
-              <td>Luca</td>
-              <td>Alex</td>
-            </tr>
-            <tr>
-              <th>3</th>
-              <td>Robin</td>
-              <td>Luca</td>
-              <td>Alex</td>
-              <td>Sam</td>
-            </tr>
-            <tr>
-              <th>4</th>
-              <td>Luca</td>
-              <td>Alex</td>
-              <td>Sam</td>
-              <td>Robin</td>
-            </tr>
-            </tbody>
+            <tbody id="schedule-body"></tbody>
           </table>
         </div>
       </aside>
