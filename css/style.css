@@ -434,9 +434,15 @@ textarea::placeholder {
 
 .page-grid {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+  grid-template-columns: minmax(280px, 1fr) minmax(0, 1.5fr);
   gap: 24px;
   align-items: start;
+  margin-bottom: 24px;
+}
+
+/* Falls ein dritter Bereich (z. B. Aside) direkt im page-grid liegt, nimmt er die volle Breite ein */
+.page-grid > .info-aside {
+  grid-column: 1 / -1;
 }
 
 /* Verhindert, dass lange Inhalte das Grid verbreitern. */
@@ -480,6 +486,7 @@ textarea::placeholder {
 
 .filter-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   gap: 16px;
 
@@ -492,8 +499,8 @@ textarea::placeholder {
 }
 
 .filter-bar .form-group {
-  flex: 1;
-  min-width: 0;
+  flex: 1 1 160px;
+  min-width: 140px;
   margin-bottom: 0;
 }
 
@@ -518,8 +525,10 @@ textarea::placeholder {
 
 .item-card {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
+  gap: 12px 16px;
 
   width: 100%;
   padding: 16px;
@@ -539,7 +548,7 @@ textarea::placeholder {
 }
 
 .item-card > :first-child {
-  flex: 1;
+  flex: 1 1 200px;
 }
 
 .item-card h2,

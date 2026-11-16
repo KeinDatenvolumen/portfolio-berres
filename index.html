@@ -39,6 +39,22 @@
     </header>
 
     <main class="main-content">
+      <!-- Statistik-Übersicht zur Einkaufsliste -->
+      <section aria-label="Einkaufsstatistik" class="stats-grid">
+        <article class="stat-box">
+          <h2>Gesamtartikel</h2>
+          <p id="stat-total">0</p>
+        </article>
+        <article class="stat-box">
+          <h2>Noch zu kaufen</h2>
+          <p id="stat-open">0</p>
+        </article>
+        <article class="stat-box">
+          <h2>Bereits erledigt</h2>
+          <p id="stat-done">0</p>
+        </article>
+      </section>
+
       <div class="page-grid">
         <!-- Eingabeformular für neue Einkaufsartikel -->
         <section aria-labelledby="form-heading" class="card">
@@ -105,12 +121,44 @@
           </form>
         </section>
 
-        <!-- Anzeige der aktuellen Einkaufsliste -->
+        <!-- Anzeige und Filterung der aktuellen Einkaufsliste -->
         <section aria-labelledby="list-heading" class="card">
           <h2 id="list-heading">Aktuelle Einkaufsliste</h2>
+
+          <div class="filter-bar">
+            <div class="form-group">
+              <label for="filter-search">Artikel suchen</label>
+              <input
+                type="search"
+                id="filter-search"
+                name="filterSearch"
+                placeholder="Suchbegriff eingeben..."
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="filter-category">Kategorie</label>
+              <select id="filter-category" name="filterCategory">
+                <option value="ALL">Alle Kategorien</option>
+                <option value="Obst &amp; Gemüse">Obst &amp; Gemüse</option>
+                <option value="Kühlregal">Kühlregal</option>
+                <option value="Getränke">Getränke</option>
+                <option value="Haushalt">Haushalt</option>
+              </select>
+            </div>
+
+            <button
+              type="button"
+              id="clear-completed-btn"
+              class="btn btn-secondary btn-sm"
+            >
+              Erledigte entfernen
+            </button>
+          </div>
+
           <ul id="shopping-list" class="item-list"></ul>
           <p id="shopping-empty" class="empty-state" hidden>
-            Aktuell stehen keine Artikel auf der Einkaufsliste.
+            Keine passenden Artikel auf der Einkaufsliste gefunden.
           </p>
         </section>
       </div>
@@ -120,7 +168,8 @@
         <h2 id="tips-heading">WG-Einkaufshinweise</h2>
         <p>
           Tragt gemeinsam benötigte Lebensmittel und Haushaltsartikel rechtzeitig
-          ein. Neue WG-Mitglieder könnt ihr jederzeit unter
+          ein. Gekaufte Artikel könnt ihr direkt als <strong>Erledigt</strong>
+          markieren. Neue WG-Mitglieder lassen sich jederzeit unter
           <a href="mitbewohner.html">Mitbewohner</a> verwalten.
         </p>
       </aside>
