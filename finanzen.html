@@ -1,55 +1,76 @@
 <!-- Gruppenname: WI_A_Gruppe_1 -->
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="WG-Held – Ausgaben-Tracker und Pro-Kopf-Abrechnung"
-    />
-    <title>WG-Held – Finanzen</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <script src="js/storage.js" defer></script>
-    <script src="js/finanzen.js" defer></script>
-  </head>
-  <body>
-    <header class="site-header">
-      <div class="header-brand">
-        <img
-          src="img/logo.svg"
-          alt="WG-Held Logo"
-          width="60"
-          height="60"
-          class="brand-logo"
-        />
-        <div>
-          <h1>WG-Held</h1>
-          <p class="tagline">Ordnung im WG-Alltag</p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WG-Held – Finanzen</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <nav aria-label="Hauptnavigation">
+    <ul>
+      <li><a href="index.html">Startseite</a></li>
+      <li><a href="putzplan.html">Putzplan</a></li>
+      <li><a href="finanzen.html" aria-current="page">Finanzen</a></li>
+      <li><a href="mitbewohner.html">Mitbewohner</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="main-content">
+  <h1>WG-Finanzen &amp; Ausgaben-Rechner</h1>
+
+  <div class="page-grid">
+    <section class="card" aria-labelledby="form-heading">
+      <h2 id="form-heading">Neue Ausgabe erfassen</h2>
+      <form id="expense-form" novalidate>
+        <div class="form-group">
+          <label for="expense-title">Verwendungszweck</label>
+          <input type="text" id="expense-title" name="title" placeholder="z. B. Wocheneinkauf Rewe" required>
         </div>
-      </div>
-      <nav aria-label="Hauptnavigation">
-        <ul class="nav-list">
-          <li><a href="index.html" class="nav-link">Einkaufsliste</a></li>
-          <li><a href="putzplan.html" class="nav-link">Putzplan</a></li>
-          <li><a href="finanzen.html" class="nav-link active">Finanzen</a></li>
-          <li><a href="mitbewohner.html" class="nav-link">Mitbewohner</a></li>
-        </ul>
-      </nav>
-    </header>
 
-    <main class="main-content">
-      <section aria-labelledby="finance-heading" class="card">
-        <h2 id="finance-heading">WG-Kassensturz &amp; Ausgaben</h2>
-        <p>
-          Hier entsteht der Ausgaben-Rechner zur fairen Aufteilung gemeinsamer
-          WG-Kosten.
-        </p>
-      </section>
-    </main>
+        <div class="form-group">
+          <label for="expense-amount">Betrag in €</label>
+          <input type="number" id="expense-amount" name="amount" step="0.01" min="0.01" placeholder="0,00" required>
+        </div>
 
-    <footer class="site-footer">
-      <p>&copy; 2026 WG-Held – Portfolioprüfung Webtechnologien (DHBW Mosbach)</p>
-    </footer>
-  </body>
+        <div class="form-group">
+          <label for="expense-person">Bezahlt von</label>
+          <select id="expense-person" name="person" required></select>
+        </div>
+
+        <div class="form-group">
+          <label for="expense-category">Kategorie</label>
+          <select id="expense-category" name="category" required>
+            <option value="Lebensmittel">Lebensmittel</option>
+            <option value="Haushalt">Haushalt</option>
+            <option value="Freizeit">Freizeit</option>
+            <option value="Sonstiges">Sonstiges</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="expense-date">Datum</label>
+          <input type="date" id="expense-date" name="date" required>
+        </div>
+
+        <p id="finance-error" class="error-message" role="alert" hidden></p>
+
+        <button type="submit" class="btn btn-primary">Ausgabe hinzufügen</button>
+      </form>
+    </section>
+
+    <section class="card" aria-labelledby="list-heading">
+      <h2 id="list-heading">Alle Ausgaben</h2>
+      <p id="empty-message" hidden>Noch keine Ausgaben erfasst.</p>
+      <ul id="expense-list" class="item-list"></ul>
+    </section>
+  </div>
+</main>
+
+<script src="js/storage.js"></script>
+<script src="js/finanzen.js"></script>
+</body>
 </html>
