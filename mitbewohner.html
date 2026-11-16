@@ -1,0 +1,107 @@
+<!-- Gruppenname: WI_A_Gruppe_1 -->
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="WG-Held – Verwaltung der WG-Mitbewohner und Zimmer"
+    />
+    <title>WG-Held – Mitbewohner</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/storage.js" defer></script>
+    <script src="js/mitbewohner.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-brand">
+        <img
+          src="img/logo.svg"
+          alt="WG-Held Logo"
+          width="60"
+          height="60"
+          class="brand-logo"
+        />
+        <div>
+          <h1>WG-Held</h1>
+          <p class="tagline">Ordnung im WG-Alltag</p>
+        </div>
+      </div>
+      <nav aria-label="Hauptnavigation">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">Einkaufsliste</a></li>
+          <li><a href="putzplan.html" class="nav-link">Putzplan</a></li>
+          <li><a href="finanzen.html" class="nav-link">Finanzen</a></li>
+          <li><a href="mitbewohner.html" class="nav-link active">Mitbewohner</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <div class="page-grid">
+        <!-- Formular zum Hinzufügen eines Mitbewohners -->
+        <section aria-labelledby="add-roommate-heading" class="card">
+          <h2 id="add-roommate-heading">Neue Person zur WG hinzufügen</h2>
+          <form id="roommate-form" novalidate>
+            <div class="form-group">
+              <label for="roommate-name">Vorname / Rufname *</label>
+              <input
+                type="text"
+                id="roommate-name"
+                name="roommateName"
+                placeholder="z. B. Mia"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="roommate-room">Zimmer / Bereich</label>
+              <input
+                type="text"
+                id="roommate-room"
+                name="roommateRoom"
+                placeholder="z. B. Zimmer 1 (Balkon)"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="roommate-email">E-Mail-Adresse (optional)</label>
+              <input
+                type="email"
+                id="roommate-email"
+                name="roommateEmail"
+                placeholder="z. B. mia@beispiel.de"
+              />
+            </div>
+
+            <p id="roommate-error" class="error-message" hidden></p>
+
+            <button type="submit" class="btn btn-primary">
+              Mitbewohner speichern
+            </button>
+          </form>
+        </section>
+
+        <!-- Liste der aktuellen Mitbewohner -->
+        <section aria-labelledby="roommate-list-heading" class="card">
+          <h2 id="roommate-list-heading">Aktuelle WG-Mitbewohner</h2>
+          <ul id="roommate-list" class="item-list"></ul>
+        </section>
+      </div>
+
+      <aside aria-labelledby="roommate-info-heading" class="card info-aside">
+        <h2 id="roommate-info-heading">Hinweis zur Mitbewohner-Verwaltung</h2>
+        <p>
+          Alle hier eingetragenen Personen stehen automatisch als Auswahl in der
+          <strong>Einkaufsliste</strong>, im <strong>Putzplan</strong> und bei
+          der <strong>Finanzabrechnung</strong> zur Verfügung.
+        </p>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 WG-Held – Portfolioprüfung Webtechnologien (DHBW Mosbach)</p>
+    </footer>
+  </body>
+</html>

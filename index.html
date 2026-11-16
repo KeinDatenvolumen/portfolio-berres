@@ -33,18 +33,97 @@
           <li><a href="index.html" class="nav-link active">Einkaufsliste</a></li>
           <li><a href="putzplan.html" class="nav-link">Putzplan</a></li>
           <li><a href="finanzen.html" class="nav-link">Finanzen</a></li>
+          <li><a href="mitbewohner.html" class="nav-link">Mitbewohner</a></li>
         </ul>
       </nav>
     </header>
 
     <main class="main-content">
-      <section aria-labelledby="welcome-heading" class="card">
-        <h2 id="welcome-heading">Gemeinsame Einkaufsliste</h2>
+      <div class="page-grid">
+        <!-- Eingabeformular für neue Einkaufsartikel -->
+        <section aria-labelledby="form-heading" class="card">
+          <h2 id="form-heading">Neuen Artikel hinzufügen</h2>
+          <form id="shopping-form" novalidate>
+            <div class="form-group">
+              <label for="item-name">Artikelbezeichnung *</label>
+              <input
+                type="text"
+                id="item-name"
+                name="itemName"
+                placeholder="z. B. Hafermilch"
+                required
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="item-quantity">Anzahl *</label>
+                <input
+                  type="number"
+                  id="item-quantity"
+                  name="itemQuantity"
+                  min="1"
+                  max="99"
+                  value="1"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="item-unit">Einheit / Hinweis</label>
+                <input
+                  type="text"
+                  id="item-unit"
+                  name="itemUnit"
+                  placeholder="z. B. Packung, Liter, Stück"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="item-category">Kategorie</label>
+                <select id="item-category" name="itemCategory">
+                  <option value="Obst &amp; Gemüse">Obst &amp; Gemüse</option>
+                  <option value="Kühlregal">Kühlregal</option>
+                  <option value="Getränke">Getränke</option>
+                  <option value="Haushalt">Haushalt</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="item-person">Zuständig</label>
+                <select id="item-person" name="itemPerson"></select>
+              </div>
+            </div>
+
+            <p id="shopping-error" class="error-message" hidden></p>
+
+            <button type="submit" class="btn btn-primary">
+              Zur Einkaufsliste hinzufügen
+            </button>
+          </form>
+        </section>
+
+        <!-- Anzeige der aktuellen Einkaufsliste -->
+        <section aria-labelledby="list-heading" class="card">
+          <h2 id="list-heading">Aktuelle Einkaufsliste</h2>
+          <ul id="shopping-list" class="item-list"></ul>
+          <p id="shopping-empty" class="empty-state" hidden>
+            Aktuell stehen keine Artikel auf der Einkaufsliste.
+          </p>
+        </section>
+      </div>
+
+      <!-- Infobereich mit Verweis auf die Mitbewohnerverwaltung -->
+      <aside aria-labelledby="tips-heading" class="card info-aside">
+        <h2 id="tips-heading">WG-Einkaufshinweise</h2>
         <p>
-          Hier entsteht das Einkaufs- und Übersichtsmodul unserer WG. Die
-          Interaktionsfunktionen werden in den kommenden Arbeitspaketen ergänzt.
+          Tragt gemeinsam benötigte Lebensmittel und Haushaltsartikel rechtzeitig
+          ein. Neue WG-Mitglieder könnt ihr jederzeit unter
+          <a href="mitbewohner.html">Mitbewohner</a> verwalten.
         </p>
-      </section>
+      </aside>
     </main>
 
     <footer class="site-footer">
