@@ -1,22 +1,54 @@
 /* Gruppenname: WI_A_Gruppe_1 */
-const defaultTasks = [
-    {
-        id: 1,
-        title: "Arbeitsplatte reinigen",
-        room: "Küche",
-        person: "Alex",
-        dueDate: "2026-11-20",
-        completed: false
-    },
-    {
-        id: 2,
-        title: "Spiegel putzen",
-        room: "Bad",
-        person: "Sam",
-        dueDate: "2026-11-21",
-        completed: false
+function loadRoommates() {
+    if (typeof getRoommates !== "function") {
+        return [];
     }
-];
+
+    const storedRoommates = getRoommates();
+
+    if (!Array.isArray(storedRoommates)) {
+        return [];
+    }
+
+    return storedRoommates.filter(function (name) {
+        return (
+            typeof name === "string" &&
+            name.trim() !== ""
+        );
+    });
+}
+
+const roommates = loadRoommates();
+
+function createDefaultTasks() {
+    const exampleTasks = [];
+
+    if (roommates.length >= 1) {
+        exampleTasks.push({
+            id: 1,
+            title: "Arbeitsplatte reinigen",
+            room: "Küche",
+            person: roommates[0],
+            dueDate: "2026-11-20",
+            completed: false
+        });
+    }
+
+    if (roommates.length >= 2) {
+        exampleTasks.push({
+            id: 2,
+            title: "Spiegel putzen",
+            room: "Bad",
+            person: roommates[1],
+            dueDate: "2026-11-21",
+            completed: false
+        });
+    }
+
+    return exampleTasks;
+}
+
+const defaultTasks = createDefaultTasks();
 
 let tasks = loadTasks();
 
@@ -35,6 +67,8 @@ const resetFilterButton = document.getElementById("reset-filter-btn");
 
 const progressText = document.getElementById("progress-text");
 const progressBar = document.getElementById("progress-bar");
+
+const scheduleBody = document.getElementById("schedule-body");
 
 function loadTasks() {
     let loadedTasks;
@@ -90,6 +124,92 @@ function saveTasks() {
         "cleaningTasks",
         JSON.stringify(tasks)
     );
+}
+
+function addRoommateOptions(selectElement, firstOptionText) {
+    selectElement.replaceChildren();
+
+    const firstOption = document.createElement("option");
+    firstOption.value = "";
+    firstOption.textContent = firstOptionText;
+
+    selectElement.appendChild(firstOption);
+
+    roommates.forEach(function (roommate) {
+        const option = document.createElement("option");
+        option.value = roommate;
+        option.textContent = roommate;
+
+        selectElement.appendChild(option);
+    });
+}
+
+function populateRoommateDropdowns() {
+    addRoommateOptions(
+        taskPersonInput,
+        "Bitte wählen"
+    );
+
+    addRoommateOptions(
+        personFilter,
+        "Alle Personen"
+    );
+}
+
+function createScheduleCell(text, elementName) {
+    const cell = document.createElement(elementName);
+    cell.textContent = text;
+
+    return cell;
+}
+
+function renderScheduleTable() {
+    if (scheduleBody === null) {
+        return;
+    }
+
+    scheduleBody.replaceChildren();
+
+    if (roommates.length === 0) {
+        const row = document.createElement("tr");
+        const emptyCell = document.createElement("td");
+
+        emptyCell.colSpan = 5;
+        emptyCell.className = "empty-state";
+        emptyCell.textContent =
+            "Noch keine Mitbewohner eingetragen.";
+
+        row.appendChild(emptyCell);
+        scheduleBody.appendChild(row);
+
+        return;
+    }
+
+    roommates.forEach(function (roommate, weekIndex) {
+        const row = document.createElement("tr");
+
+        const weekCell = createScheduleCell(
+            String(weekIndex + 1),
+            "th"
+        );
+
+        weekCell.scope = "row";
+        row.appendChild(weekCell);
+
+        for (let roomIndex = 0; roomIndex < 4; roomIndex += 1) {
+            const roommateIndex =
+                (weekIndex + roomIndex) % roommates.length;
+
+            const nameCell = createScheduleCell(
+                roommates[roommateIndex],
+                "td"
+            );
+
+            row.appendChild(nameCell);
+        }
+
+        scheduleBody.appendChild(row);
+    });
 }
 
 function validateForm() {
@@ -192,10 +312,12 @@ function createTaskCard(task) {
         taskArticle.classList.add("item-completed");
     }
 
+    const infoContainer = document.createElement("div");
+
     const taskTitle = document.createElement("h3");
     taskTitle.textContent = task.title;
 
-    const badgeContainer = document.createElement("p");
+    const taskDetails = document.createElement("p");
 
     const roomBadge = createBadge(
         task.room,
@@ -209,17 +331,24 @@ function createTaskCard(task) {
             : "badge badge-open"
     );
 
-    badgeContainer.appendChild(roomBadge);
-    badgeContainer.appendChild(document.createTextNode(" "));
-    badgeContainer.appendChild(statusBadge);
+    taskDetails.appendChild(roomBadge);
+    taskDetails.appendChild(document.createTextNode(" "));
+    taskDetails.appendChild(statusBadge);
 
-    const responsiblePerson = document.createElement("p");
-    responsiblePerson.textContent =
-        "Zuständig: " + task.person;
+    taskDetails.appendChild(
+        document.createTextNode(
+            " • Zuständig: " +
+            task.person +
+            " • Fällig: " +
+            task.dueDate
+        )
+    );
 
-    const dueDate = document.createElement("p");
-    dueDate.textContent =
-        "Fällig: " + task.dueDate;
+    infoContainer.appendChild(taskTitle);
+    infoContainer.appendChild(taskDetails);
+
+    const actionContainer = document.createElement("div");
+    actionContainer.className = "form-row";
 
     const statusButton = document.createElement("button");
     statusButton.type = "button";
@@ -241,12 +370,11 @@ function createTaskCard(task) {
         deleteTask(task.id);
     });
 
-    taskArticle.appendChild(taskTitle);
-    taskArticle.appendChild(badgeContainer);
-    taskArticle.appendChild(responsiblePerson);
-    taskArticle.appendChild(dueDate);
-    taskArticle.appendChild(statusButton);
-    taskArticle.appendChild(deleteButton);
+    actionContainer.appendChild(statusButton);
+    actionContainer.appendChild(deleteButton);
+
+    taskArticle.appendChild(infoContainer);
+    taskArticle.appendChild(actionContainer);
 
     return taskArticle;
 }
@@ -314,6 +442,9 @@ function renderPage() {
     renderTasks();
     updateProgress();
 }
+
+populateRoommateDropdowns();
+renderScheduleTable();
 
 addTaskButton.addEventListener("click", addTask);
 
