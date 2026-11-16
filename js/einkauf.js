@@ -29,7 +29,7 @@ const DEFAULT_SHOPPING_ITEMS = [
     unit: "Stück",
     category: "Obst & Gemüse",
     person: "Robin",
-    completed: false
+    completed: true
   }
 ];
 
@@ -46,6 +46,14 @@ const shoppingError = document.getElementById("shopping-error");
 const shoppingListElement = document.getElementById("shopping-list");
 const shoppingEmptyHint = document.getElementById("shopping-empty");
 
+const filterSearchInput = document.getElementById("filter-search");
+const filterCategorySelect = document.getElementById("filter-category");
+const clearCompletedButton = document.getElementById("clear-completed-btn");
+
+const statTotalElement = document.getElementById("stat-total");
+const statOpenElement = document.getElementById("stat-open");
+const statDoneElement = document.getElementById("stat-done");
+
 /**
  * Initialisiert die Einkaufsliste beim Laden der Seite.
  */
@@ -58,6 +66,9 @@ function initShoppingPage() {
   renderShoppingList();
 
   shoppingForm.addEventListener("submit", handleAddShoppingItem);
+  filterSearchInput.addEventListener("input", renderShoppingList);
+  filterCategorySelect.addEventListener("change", renderShoppingList);
+  clearCompletedButton.addEventListener("click", handleClearCompletedItems);
 }
 
 /**
@@ -153,6 +164,23 @@ function handleAddShoppingItem(event) {
 }
 
 /**
+ * Schaltet den Erledigt-Status eines Einkaufsartikels um.
+ *
+ * @param {string} itemId - Die ID des betreffenden Artikels
+ */
+function toggleShoppingItemStatus(itemId) {
+  for (let i = 0; i < shoppingItems.length; i++) {
+    if (shoppingItems[i].id === itemId) {
+      shoppingItems[i].completed = !shoppingItems[i].completed;
+      break;
+    }
+  }
+
+  saveToStorage(STORAGE_KEYS.SHOPPING, shoppingItems);
+  renderShoppingList();
+}
+
+/**
  * Löscht einen Artikel anhand seiner ID aus der Einkaufsliste.
  *
  * @param {string} itemId - Die ID des zu löschenden Artikels
@@ -164,6 +192,50 @@ function deleteShoppingItem(itemId) {
 }
 
 /**
+ * Entfernt alle bereits als erledigt markierten Artikel aus der Liste.
+ */
+function handleClearCompletedItems() {
+  shoppingItems = shoppingItems.filter((item) => !item.completed);
+  saveToStorage(STORAGE_KEYS.SHOPPING, shoppingItems);
+  renderShoppingList();
+}
+
+/**
+ * Aktualisiert die Statistik-Kacheln (Gesamt, Offen, Erledigt).
+ */
+function updateShoppingStatistics() {
+  const totalCount = shoppingItems.length;
+  const completedCount = shoppingItems.filter((item) => item.completed).length;
+  const openCount = totalCount - completedCount;
+
+  statTotalElement.textContent = String(totalCount);
+  statOpenElement.textContent = String(openCount);
+  statDoneElement.textContent = String(completedCount);
+}
+
+/**
+ * Filtert die Einkaufsartikel anhand von Suchbegriff und gewählter Kategorie.
+ *
+ * @returns {Array<Object>} Gefilterte Liste der Artikel
+ */
+function getFilteredShoppingItems() {
+  const searchTerm = filterSearchInput.value.trim().toLowerCase();
+  const selectedCategory = filterCategorySelect.value;
+
+  return shoppingItems.filter((item) => {
+    const matchesSearch =
+      !searchTerm ||
+      item.name.toLowerCase().includes(searchTerm) ||
+      item.person.toLowerCase().includes(searchTerm);
+
+    const matchesCategory =
+      selectedCategory === "ALL" || item.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
+}
+
+/**
  * Erstellt das DOM-Listenelement (<li>) für einen einzelnen Einkaufsartikel.
  *
  * @param {Object} item - Das Artikel-Objekt
@@ -171,11 +243,11 @@ function deleteShoppingItem(itemId) {
  */
 function createShoppingListElement(item) {
   const listItem = document.createElement("li");
-  listItem.className = "item-card";
+  listItem.className = item.completed ? "item-card item-completed" : "item-card";
 
   const infoContainer = document.createElement("div");
 
-  const titleElement = document.createElement("strong");
+  const titleElement = document.createElement("h3");
   titleElement.textContent = `${item.quantity} ${item.unit} ${item.name}`;
 
   const detailsParagraph = document.createElement("p");
@@ -183,16 +255,31 @@ function createShoppingListElement(item) {
   categoryBadge.className = "badge badge-category";
   categoryBadge.textContent = item.category;
 
+  const statusBadge = document.createElement("span");
+  statusBadge.className = item.completed ? "badge badge-done" : "badge badge-open";
+  statusBadge.textContent = item.completed ? "Gekauft" : "Offen";
+
   const personInfo = document.createElement("span");
   personInfo.textContent = ` • Zuständig: ${item.person}`;
 
   detailsParagraph.appendChild(categoryBadge);
+  detailsParagraph.appendChild( document.createTextNode(" ") );
+  detailsParagraph.appendChild(statusBadge);
   detailsParagraph.appendChild(personInfo);
 
   infoContainer.appendChild(titleElement);
   infoContainer.appendChild(detailsParagraph);
 
   const actionContainer = document.createElement("div");
+  actionContainer.className = "form-row";
+
+  const toggleButton = document.createElement("button");
+  toggleButton.type = "button";
+  toggleButton.className = "btn btn-secondary btn-sm";
+  toggleButton.textContent = item.completed ? "Rückgängig" : "Erledigen";
+  toggleButton.addEventListener("click", () => {
+    toggleShoppingItemStatus(item.id);
+  });
 
   const deleteButton = document.createElement("button");
   deleteButton.type = "button";
@@ -202,6 +289,7 @@ function createShoppingListElement(item) {
     deleteShoppingItem(item.id);
   });
 
+  actionContainer.appendChild(toggleButton);
   actionContainer.appendChild(deleteButton);
 
   listItem.appendChild(infoContainer);
@@ -211,20 +299,23 @@ function createShoppingListElement(item) {
 }
 
 /**
- * Rendert alle Einkaufsartikel in das DOM.
+ * Rendert alle gefilterten Einkaufsartikel in das DOM und aktualisiert die Statistik.
  */
 function renderShoppingList() {
+  updateShoppingStatistics();
+
+  const filteredItems = getFilteredShoppingItems();
   shoppingListElement.innerHTML = "";
 
-  if (shoppingItems.length === 0) {
+  if (filteredItems.length === 0) {
     shoppingEmptyHint.hidden = false;
     return;
   }
 
   shoppingEmptyHint.hidden = true;
 
-  for (let i = 0; i < shoppingItems.length; i++) {
-    const itemElement = createShoppingListElement(shoppingItems[i]);
+  for (let i = 0; i < filteredItems.length; i++) {
+    const itemElement = createShoppingListElement(filteredItems[i]);
     shoppingListElement.appendChild(itemElement);
   }
 }
