@@ -22,6 +22,21 @@
 <main class="main-content">
   <h1>WG-Finanzen &amp; Ausgaben-Rechner</h1>
 
+  <section class="stats-grid" aria-label="Finanz-Kennzahlen">
+    <div class="stat-box">
+      <span class="stat-label">Gesamtausgaben</span>
+      <strong class="stat-value" id="stat-total">0,00 €</strong>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Pro-Kopf-Anteil</span>
+      <strong class="stat-value" id="stat-per-head">0,00 €</strong>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Anzahl Buchungen</span>
+      <strong class="stat-value" id="stat-count">0</strong>
+    </div>
+  </section>
+
   <div class="page-grid">
     <section class="card" aria-labelledby="form-heading">
       <h2 id="form-heading">Neue Ausgabe erfassen</h2>
@@ -64,10 +79,34 @@
 
     <section class="card" aria-labelledby="list-heading">
       <h2 id="list-heading">Alle Ausgaben</h2>
-      <p id="empty-message" hidden>Noch keine Ausgaben erfasst.</p>
+
+      <div class="filter-bar">
+        <div class="form-group">
+          <label for="filter-person">Person</label>
+          <select id="filter-person" name="filter-person"></select>
+        </div>
+        <div class="form-group">
+          <label for="filter-category">Kategorie</label>
+          <select id="filter-category" name="filter-category">
+            <option value="">Alle Kategorien</option>
+            <option value="Lebensmittel">Lebensmittel</option>
+            <option value="Haushalt">Haushalt</option>
+            <option value="Freizeit">Freizeit</option>
+            <option value="Sonstiges">Sonstiges</option>
+          </select>
+        </div>
+      </div>
+
+      <p id="empty-message" hidden></p>
       <ul id="expense-list" class="item-list"></ul>
     </section>
   </div>
+
+  <aside class="card info-aside" aria-labelledby="balance-heading">
+    <h2 id="balance-heading">WG-Kassensturz</h2>
+    <p id="balance-summary"></p>
+    <ul id="balance-list" class="balance-list"></ul>
+  </aside>
 </main>
 
 <script src="js/storage.js"></script>
