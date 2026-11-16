@@ -11,12 +11,31 @@ const dateInput = document.getElementById("expense-date");
 const errorMessage = document.getElementById("finance-error");
 const expenseList = document.getElementById("expense-list");
 const emptyMessage = document.getElementById("empty-message");
+const filterPersonSelect = document.getElementById("filter-person");
+const filterCategorySelect = document.getElementById("filter-category");
+const statTotal = document.getElementById("stat-total");
+const statPerHead = document.getElementById("stat-per-head");
+const statCount = document.getElementById("stat-count");
+const balanceSummary = document.getElementById("balance-summary");
+const balanceList = document.getElementById("balance-list");
 
-// ---------- Hilfsfunktionen: Mitbewohner ----------
+// ---------- Mitbewohner & Beteiligte ----------
+// Unterstützt Strings ("Anna") und Objekte ({ name: "Anna" }) aus getRoommates()
 function getRoommateNames() {
     return getRoommates().map(function (roommate) {
         return typeof roommate === "string" ? roommate : roommate.name;
     });
+}
+
+// Alle Mitbewohner plus Personen, die nur noch in Buchungen vorkommen
+function getParticipantNames() {
+    const names = getRoommateNames();
+    expenses.forEach(function (item) {
+        if (!names.includes(item.person)) {
+            names.push(item.person);
+        }
+    });
+    return names;
 }
 
 // ---------- Start-Beispieldaten ----------
@@ -40,6 +59,11 @@ function formatEuro(amount) {
     return Number(amount).toFixed(2).replace(".", ",") + " €";
 }
 
+function formatSignedEuro(amount) {
+    const sign = amount > 0 ? "+" : "-";
+    return sign + formatEuro(Math.abs(amount));
+}
+
 function getTodayAsInputValue() {
     const today = new Date();
     const month = String(today.getMonth() + 1).padStart(2, "0");
@@ -58,24 +82,29 @@ function clearError() {
     errorMessage.hidden = true;
 }
 
-// ---------- Dropdown „Bezahlt von“ ----------
-function renderPersonSelect() {
-    const previousValue = personSelect.value;
-    personSelect.innerHTML = "";
+// ---------- Dropdowns ----------
+function fillSelect(select, firstLabel, names) {
+    const previousValue = select.value;
+    select.innerHTML = "";
 
-    const placeholder = document.createElement("option");
-    placeholder.value = "";
-    placeholder.textContent = "Bitte wählen …";
-    personSelect.appendChild(placeholder);
+    const firstOption = document.createElement("option");
+    firstOption.value = "";
+    firstOption.textContent = firstLabel;
+    select.appendChild(firstOption);
 
-    getRoommateNames().forEach(function (name) {
+    names.forEach(function (name) {
         const option = document.createElement("option");
         option.value = name;
         option.textContent = name;
-        personSelect.appendChild(option);
+        select.appendChild(option);
     });
 
-    personSelect.value = previousValue;
+    select.value = previousValue;
+}
+
+function renderPersonSelects() {
+    fillSelect(personSelect, "Bitte wählen …", getRoommateNames());
+    fillSelect(filterPersonSelect, "Alle Personen", getParticipantNames());
 }
 
 // ---------- Validierung ----------
@@ -111,7 +140,88 @@ function validateExpenseInput() {
     };
 }
 
-// ---------- Rendering ----------
+// ---------- Filter ----------
+function getFilteredExpenses() {
+    const person = filterPersonSelect.value;
+    const category = filterCategorySelect.value;
+    return expenses.filter(function (item) {
+        const personMatches = person === "" || item.person === person;
+        const categoryMatches = category === "" || item.category === category;
+        return personMatches && categoryMatches;
+    });
+}
+
+// ---------- Berechnungen ----------
+function calculateTotal() {
+    return expenses.reduce(function (sum, item) {
+        return sum + Number(item.amount);
+    }, 0);
+}
+
+function calculatePerHead() {
+    const participantCount = getParticipantNames().length;
+    return participantCount > 0 ? calculateTotal() / participantCount : 0;
+}
+
+function calculatePaidBy(name) {
+    return expenses
+        .filter(function (item) { return item.person === name; })
+        .reduce(function (sum, item) { return sum + Number(item.amount); }, 0);
+}
+
+// Saldo > 0: bekommt Geld zurück, Saldo < 0: muss nachzahlen
+function calculateBalance(name) {
+    return Number((calculatePaidBy(name) - calculatePerHead()).toFixed(2));
+}
+
+// ---------- Rendering: Statistik ----------
+function renderStats() {
+    statTotal.textContent = formatEuro(calculateTotal());
+    statPerHead.textContent = formatEuro(calculatePerHead());
+    statCount.textContent = String(expenses.length);
+}
+
+// ---------- Rendering: Kassensturz ----------
+function createBalanceText(balance) {
+    const text = document.createElement("strong");
+    if (balance > 0) {
+        text.className = "balance-positive";
+        text.textContent = "bekommt " + formatSignedEuro(balance);
+    } else if (balance < 0) {
+        text.className = "balance-negative";
+        text.textContent = "zahlt " + formatSignedEuro(balance);
+    } else {
+        text.textContent = "ist ausgeglichen";
+    }
+    return text;
+}
+
+function createBalanceRow(name) {
+    const row = document.createElement("li");
+    const label = document.createElement("span");
+    label.textContent = name + " hat " + formatEuro(calculatePaidBy(name)) + " bezahlt → ";
+    row.appendChild(label);
+    row.appendChild(createBalanceText(calculateBalance(name)));
+    return row;
+}
+
+function renderBalance() {
+    const names = getParticipantNames();
+    balanceList.innerHTML = "";
+
+    if (names.length === 0) {
+        balanceSummary.textContent = "Noch keine Mitbewohner vorhanden.";
+        return;
+    }
+
+    balanceSummary.textContent =
+        "Pro-Kopf-Anteil bei " + names.length + " Personen: " + formatEuro(calculatePerHead());
+    names.forEach(function (name) {
+        balanceList.appendChild(createBalanceRow(name));
+    });
+}
+
+// ---------- Rendering: Ausgabenliste ----------
 function createInfoContainer(item) {
     const infoContainer = document.createElement("div");
 
@@ -156,23 +266,38 @@ function createExpenseCard(item) {
     return card;
 }
 
-function renderExpenses() {
-    expenseList.innerHTML = "";
-    emptyMessage.hidden = expenses.length > 0;
-
-    const sorted = expenses.slice().sort(function (a, b) {
+function renderExpenseList() {
+    const visible = getFilteredExpenses().sort(function (a, b) {
         return b.date.localeCompare(a.date);
     });
-    sorted.forEach(function (item) {
+
+    expenseList.innerHTML = "";
+    if (visible.length === 0) {
+        emptyMessage.textContent = expenses.length === 0
+            ? "Noch keine Ausgaben erfasst."
+            : "Keine Ausgaben für diesen Filter gefunden.";
+        emptyMessage.hidden = false;
+    } else {
+        emptyMessage.hidden = true;
+    }
+
+    visible.forEach(function (item) {
         expenseList.appendChild(createExpenseCard(item));
     });
+}
+
+function renderAll() {
+    renderPersonSelects();
+    renderStats();
+    renderExpenseList();
+    renderBalance();
 }
 
 // ---------- Aktionen ----------
 function addExpense(expense) {
     expenses.push(expense);
     saveToStorage(STORAGE_KEYS.FINANCE, expenses);
-    renderExpenses();
+    renderAll();
 }
 
 function deleteExpense(expenseId) {
@@ -180,7 +305,7 @@ function deleteExpense(expenseId) {
         return item.id !== expenseId;
     });
     saveToStorage(STORAGE_KEYS.FINANCE, expenses);
-    renderExpenses();
+    renderAll();
 }
 
 function resetForm() {
@@ -204,10 +329,11 @@ function handleFormSubmit(event) {
 
 // ---------- Initialisierung ----------
 function init() {
-    renderPersonSelect();
     dateInput.value = getTodayAsInputValue();
-    renderExpenses();
+    renderAll();
     expenseForm.addEventListener("submit", handleFormSubmit);
+    filterPersonSelect.addEventListener("change", renderExpenseList);
+    filterCategorySelect.addEventListener("change", renderExpenseList);
 }
 
 init();
