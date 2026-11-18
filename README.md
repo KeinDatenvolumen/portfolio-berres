@@ -63,7 +63,7 @@ Anlegen und Verwalten der WG-Mitglieder. Die Liste dient als gemeinsame Datenbas
 ## Starten
 Repository klonen und `index.html` im Browser öffnen (kein Build-Schritt nötig).
 
-## Team| 
+## Team
 Teammitglied | Verantwortungsbereich | Dateien |
 |---|---|---|
 | Kai Spitzer | Layout, Design-System und Responsivität | `css/style.css`, `img/logo.svg` |
