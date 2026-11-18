@@ -551,6 +551,11 @@ textarea::placeholder {
   flex: 1 1 200px;
 }
 
+.item-card .form-row {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .item-card h2,
 .item-card h3,
 .item-card p {
@@ -762,22 +767,28 @@ textarea::placeholder {
 @media (max-width: 768px) {
   .site-header {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 16px 24px;
+    align-items: stretch;
+    gap: 12px;
+    padding: 16px 20px;
   }
 
   .nav-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
     width: 100%;
-    flex-wrap: wrap;
   }
 
   .nav-link {
-    padding: 8px 12px;
+    display: block;
+    width: 100%;
+    padding: 9px 12px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.14);
   }
 
   .main-content {
-    padding: 24px;
+    padding: 20px;
   }
 
   /*
@@ -805,25 +816,41 @@ textarea::placeholder {
   }
 
   .stats-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .stat-box {
+    padding: 14px 10px;
+  }
+
+  .stat-box h2,
+  .stat-box h3,
+  .stat-box .stat-label {
+    font-size: 0.85rem;
+  }
+
+  .stat-box p,
+  .stat-box .stat-value {
+    font-size: 1.3rem;
   }
 
   .item-card {
-    align-items: flex-start;
+    align-items: center;
     flex-wrap: wrap;
   }
 
   .site-footer {
-    padding: 18px 24px;
+    padding: 18px 20px;
   }
 }
 
 
 /* ==================================================
-   15. Smartphone-Ansicht bis 480 Pixel
+   15. Smartphone-Ansicht bis 540 Pixel
    ================================================== */
 
-@media (max-width: 480px) {
+@media (max-width: 540px) {
   html {
     font-size: 15px;
   }
@@ -834,6 +861,7 @@ textarea::placeholder {
 
   .site-header {
     padding: 14px 16px;
+    gap: 12px;
   }
 
   .header-brand {
@@ -841,8 +869,8 @@ textarea::placeholder {
   }
 
   .brand-logo {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
   }
 
   .header-brand h1 {
@@ -855,13 +883,13 @@ textarea::placeholder {
   }
 
   /*
-     Die Navigation wird auf kleinen Smartphones
-     vollständig untereinander dargestellt.
+     Die Navigation wird auf Smartphones als kompaktes
+     2x2-Raster dargestellt.
   */
   .nav-list {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
   .nav-list li {
@@ -871,7 +899,10 @@ textarea::placeholder {
   .nav-link {
     display: block;
     width: 100%;
+    padding: 9px 10px;
+    font-size: 0.9rem;
     text-align: center;
+    background-color: rgba(255, 255, 255, 0.14);
   }
 
   .main-content {
@@ -879,7 +910,7 @@ textarea::placeholder {
   }
 
   .card {
-    padding: 18px;
+    padding: 16px;
   }
 
   .info-aside {
@@ -921,22 +952,53 @@ textarea::placeholder {
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+    padding: 14px;
+  }
+
+  /* Wichtig: auf Mobilgeräten keinen 200px-Höhenplatzhalter erzwingen! */
+  .item-card > :first-child {
+    flex: 0 1 auto;
+  }
+
+  .item-card .form-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .item-card .form-row .btn {
+    flex: 1 1 auto;
+    width: auto;
+  }
+
+  .item-card > .btn,
+  .item-card > div:not(.form-row) > .btn {
+    width: 100%;
   }
 
   .item-card .badge {
     align-self: flex-start;
   }
 
-  .item-card .btn {
-    width: 100%;
-  }
-
   .stats-grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
   }
 
   .stat-box {
-    padding: 16px;
+    padding: 12px 6px;
+  }
+
+  .stat-box h2,
+  .stat-box h3,
+  .stat-box .stat-label {
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+  }
+
+  .stat-box p,
+  .stat-box .stat-value {
+    font-size: 1.1rem;
   }
 
   /*
