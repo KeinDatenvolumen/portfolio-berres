@@ -1,7 +1,7 @@
 <!-- Gruppenname: WI_A_Gruppe_1 -->
 # WG-Held – Der digitale WG-Planer
 
-Webprojekt für die Portfolioprüfung „Einführung Webtechnologien“, entwickelt als 4er-Gruppe (WI_A_Gruppe_1).
+Webprojekt für die Portfolioprüfung „Fortgeschrittene Systementwicklung“, entwickelt als 4er-Gruppe (WI_A_Gruppe_1).
 Umgesetzt mit reinem HTML, CSS und JavaScript – ohne Frameworks, externe Bibliotheken oder Inline-Styles.
 Alle Daten werden im `localStorage` des Browsers gespeichert.
 
