@@ -21,11 +21,21 @@ Alle Daten werden im `localStorage` des Browsers gespeichert.
 
 ### index.html – Startseite
 Einstieg in die Anwendung mit Überblick über die Funktionen und Navigation zu den anderen Seiten.
-<!-- TODO Person 1: Beschreibung an die tatsächlich umgesetzten Funktionen anpassen -->
+- Neue Einkaufsartikel mit Name und Kategorie anlegen
+- Einzelne Artikel als erledigt markieren oder vollständig löschen
+- Einkaufsliste über eine Textsuche durchsuchen
+- Einträge nach ihrer Kategorie filtern
+- Einkaufsstatistik mit der Anzahl aller, offenen und erledigten Artikel anzeigen
+- Einkaufsdaten dauerhaft im `localStorage` des Browsers speichern
 
 ### putzplan.html – Putzplan
 Planung und Verwaltung der Haushaltsaufgaben der WG.
-<!-- TODO Person 2/3: Funktionen (Aufgaben anlegen, zuweisen, erledigen, löschen …) ergänzen -->
+- Putzaufgaben mit Beschreibung, Raum, zuständiger Person und Fälligkeitsdatum anlegen
+- Aufgaben nach Raum und zugewiesener Person filtern
+- Aufgaben als erledigt markieren oder aus dem Putzplan löschen
+- Fortschrittsbalken mit dem prozentualen Anteil der erledigten Aufgaben anzeigen
+- Dynamische Wochenrotations-Tabelle für die Verteilung der Aufgaben darstellen
+- Putzplandaten dauerhaft im `localStorage` des Browsers speichern
 
 ### finanzen.html – WG-Finanzen & Ausgaben-Rechner
 - **Ausgaben erfassen:** Formular mit Verwendungszweck, Betrag in € (`step="0.01"`, `min="0.01"`), „Bezahlt von“, Kategorie (Lebensmittel, Haushalt, Freizeit, Sonstiges) und Datum.
@@ -39,7 +49,10 @@ Planung und Verwaltung der Haushaltsaufgaben der WG.
 
 ### mitbewohner.html – Mitbewohner-Verwaltung
 Anlegen und Verwalten der WG-Mitglieder. Die Liste dient als gemeinsame Datenbasis für Putzplan und Finanzen.
-<!-- TODO Person 3: Funktionen (hinzufügen, löschen, Validierung …) ergänzen -->
+- Mitbewohner mit Name, Zimmer und E-Mail-Adresse anlegen
+- Bereits gespeicherte Mitbewohner anzeigen und entfernen
+- Mitbewohner zentral im `localStorage` des Browsers verwalten
+- Gespeicherte Mitbewohner als gemeinsame Datenbasis für Putzplan und WG-Finanzen bereitstellen
 
 ## Barrierefreiheit & Qualität
 - Semantisches HTML (`header`, `nav`, `main`, `section`, `aside`), `aria-current` in der Navigation
@@ -50,8 +63,10 @@ Anlegen und Verwalten der WG-Mitglieder. Die Liste dient als gemeinsame Datenbas
 ## Starten
 Repository klonen und `index.html` im Browser öffnen (kein Build-Schritt nötig).
 
-## Team
-| Person | Verantwortung |
-|---|---|
-| Person 1–3 | Siehe Modulbeschreibungen oben (bitte Namen ergänzen) |
-| Person 4 | Finanzen (`finanzen.html`, `js/finanzen.js`) und Dokumentation (`README.md`) |
+## Team| 
+Teammitglied | Verantwortungsbereich | Dateien |
+|---|---|---|
+| Kai Spitzer | Layout, Design-System und Responsivität | `css/style.css`, `img/logo.svg` |
+| Enrico | Einkaufsliste, Mitbewohner-Verwaltung und localStorage-Speichermodul | `index.html`, `js/einkauf.js`, `mitbewohner.html`, `js/mitbewohner.js`, `js/storage.js` |
+| Finley | Wöchentlicher Putzplan, Raumrotation und Fortschrittsanzeige | `putzplan.html`, `js/putzplan.js` |
+| Jonas Bieler | WG-Finanzen, Kassensturz-Saldenrechner und Dokumentation | `finanzen.html`, `js/finanzen.js`, `README.md` |
