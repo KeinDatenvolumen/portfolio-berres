@@ -700,22 +700,63 @@ textarea::placeholder {
 }
 
 .stat-box h2,
-.stat-box h3 {
+.stat-box h3,
+.stat-box .stat-label {
   margin-bottom: 8px;
   color: var(--color-text-light);
   font-size: 1rem;
+  font-weight: 700;
 }
 
-.stat-box p {
+.stat-box .stat-label {
+  display: block;
+}
+
+.stat-box p,
+.stat-box .stat-value {
   margin-bottom: 0;
   font-size: 1.6rem;
   font-weight: 700;
   overflow-wrap: anywhere;
 }
 
+.stat-box .stat-value {
+  display: block;
+  color: var(--color-text);
+}
+
 
 /* ==================================================
-   13. Tablet-Ansicht bis 768 Pixel
+   13. Kassensturz-Liste
+   ================================================== */
+
+.balance-list {
+  margin: 12px 0 0;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  list-style: none;
+}
+
+.balance-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  padding: 10px 14px;
+
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+/* ==================================================
+   14. Tablet-Ansicht bis 768 Pixel
    ================================================== */
 
 @media (max-width: 768px) {
@@ -744,7 +785,7 @@ textarea::placeholder {
      zu einem einspaltigen Layout.
   */
   .page-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .form-row {
@@ -779,7 +820,7 @@ textarea::placeholder {
 
 
 /* ==================================================
-   14. Smartphone-Ansicht bis 480 Pixel
+   15. Smartphone-Ansicht bis 480 Pixel
    ================================================== */
 
 @media (max-width: 480px) {
@@ -891,7 +932,7 @@ textarea::placeholder {
   }
 
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .stat-box {
